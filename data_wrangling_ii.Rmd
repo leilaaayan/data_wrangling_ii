@@ -1,0 +1,108 @@
+---
+title: "data_wrangling_ii"
+author: "Leila Yan"
+date: "2024-10-09"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(rvest)
+library(httr)
+```
+## Scape a table
+
+I want the first table from [this page]: https://samhda.s3-us-gov-west-1.amazonaws.com/s3fs-public/field-uploads/2k15StateFiles/NSDUHsaeShortTermCHG2015.htm
+
+read in the html
+```{r}
+url = "https://samhda.s3-us-gov-west-1.amazonaws.com/s3fs-public/field-uploads/2k15StateFiles/NSDUHsaeShortTermCHG2015.htm"
+
+drug_use_html = read_html(url)
+```
+
+extract the table(s); focus on the first one
+```{r}
+table
+drug_use_html %>%
+  html_nodes(css = "table") %>%
+  first() %>% # not working!!!
+  html_table() %>% 
+  slice(-1) %>% #removes the first row
+  as_tibble()
+
+table_marj = 
+  drug_use_html |> 
+  html_table() |> 
+  first() |>
+  slice(-1) 
+
+table_marj
+```
+## Star Wars movie info
+```{r}
+url = "https://www.imdb.com/list/ls070150896/"
+swm_html = 
+  read_html(url)
+```
+
+grab elements that i want
+```{r}
+title_vec = 
+  swm_html %>%
+  html_nodes (css = ".lister-item-header a") %>% #extract html nodes
+  html_text() 
+
+gross_rev_vec = 
+  swm_html %>%
+  html_nodes(css = ".text-small:nth-child(7) span:nth-child(5)" ) %>%
+  html_text()
+
+# to know how long the movie is
+runtime_vec= 
+  swm_html %>%
+  html_nodes(css = ".runtime") %>%
+  html_text()
+
+swm_df = 
+  tibble(
+    title = title_vec,
+    gross_rev = gross_rev_vec,
+    runtime = runtime_vec)
+```
+
+## get some water data
+this is from an API
+```{r}
+nyc_water = 
+  GET("https://data.cityofnewyork.us/resource/ia2d-e54m.csv") %>%
+  content("parsed")
+
+nyc_water = GET("https://data.cityofnewyork.us/resource/ia2d-e54m.json") %>%
+  content("text") %>%
+  jsonlite::fromJSON() %>%
+  as_tibble()
+```
+
+## BRFSS
+same process different data
+
+```{r}
+brfss_2010 =
+  GET("https://chronicdata.cdc.gov/resource/acme-vg9e.csv",
+      query = list("$limit" = 5000)) %>% #it gives 5000 rows
+  content("parsed")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
