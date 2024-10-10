@@ -94,6 +94,20 @@ brfss_2010 =
   content("parsed")
 ```
 
+## some data aren't so nice
+
+let's look at pokemon
+```{r}
+poke = 
+  GET("http://pokeapi.co/api/v2/pokemon/1") |>
+  content()
+
+poke[["name"]]
+
+poke$name
+poke$height
+poke$abilities
+```
 
 
 
