@@ -110,6 +110,118 @@ poke$abilities
 ```
 
 
+### Strings and vector - Second lecture
+```{r}
+library(rvest)
+library(p8105.datasets)
+library(tidyverse)
+```
+
+
+
+```{r}
+string_vec = c("my", "name", "is", "jeff")
+str_detect(string_vec, "jeff")
+str_replace(string_vec, "jeff", "jeff")
+str_replace(string_vec, "j", "jeff")
+```
+
+
+```{r}
+string_vec= c(
+  "i think we all rule for participating",
+  "i think i have been caught",
+  "i think this will be quite fun",
+  "it will be fun, i think"
+)
+
+str_detect(string_vec, "i think")
+# i think shows up in all 4 statements
+
+
+str_detect(string_vec, "^i think")
+# detect something that begins with i think
+
+str_detect(string_vec, "i think$")
+```
+
+```{r}
+string_vec = c(
+  "Y'all remember pres. Hw Bush?",
+  "i saw a green bush",
+  "BBQ an Bushwalking at Molonglo Gorge",
+  "BUSH -- LIVE IN CONCERT!!"
+)
+
+str_detect(string_vec, "Bush")
+# only detect Bush that starts with "B", capital
+
+str_detect(string_vec, "[Bb]ush")
+# capital and lower case B
+```
+
+```{r}
+string_vec = c(
+  "7th inning stretch",
+  "1st half soon to begin. Texas won the toss.",
+  "she is 5 feet 4 inches tall",
+  "3AM - cant sleep :("
+)
+
+str_detect(string_vec, "[0-9][a-zA-Z]")
+```
+
+```{r}
+string_vec = c(
+  'Its 7:11 in the evening',
+  'want to go to 7-11?',
+  'my flight is AA711',
+  'NetBios: scanning ip 203.167.114.66'
+  )
+
+str_detect(string_vec, "7.11")
+# catch statement1, 2, 4; miss 3
+```
+
+```{r}
+string_vec = c(
+  'The CI is [2, 5]',
+  ':-]',
+  ':-[',
+  'I found the answer on pages [6-7]'
+  )
+
+str_detect(string_vec, "\\[")
+# Some characters are “special”. These include [ and ], ( and ), and . If you want to search for these, you have to indicate they’re special using \. Unfortunately, \ is also special, so things get weird.
+```
+
+## Factors
+```{r}
+factor_vec = factor(c("male", "male", "female", "female"))
+factor_vec
+
+as.numeric(factor_vec)
+```
+
+what happens if i relevel?
+```{r}
+factor_vec = fct_relevel(factor_vec, "male")
+
+factor_vec
+
+as.numeric(factor_vec)
+```
+
+
+
+## NSDUH
+
+
+
+
+
+
+
 
 
 
